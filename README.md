@@ -1,3 +1,2 @@
 # Projekt_4_tp_Szymon_Broda_Piotr_Pietruszka
-zmiana_1_kopia_2
-adsadss
+zmiana_1_kopia_2 Szymon
