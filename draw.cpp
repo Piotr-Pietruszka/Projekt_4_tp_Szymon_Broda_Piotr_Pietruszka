@@ -48,7 +48,8 @@ INT value;
 
 uklad winda = {500, 400, 100, 200, /*cel*/2, 0, 8};
 
-RECT drawArea2 = { 500,0,701,500};
+RECT drawArea2 = { 500, 0, 701, 500};
+//RECT drawArea2 = { winda.l_d_corner_x,winda.l_d_corner_y, winda.l_d_corner_x + winda.width, winda.l_d_corner_y + winda.height, };
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
@@ -64,22 +65,22 @@ void MyOnPaint(HDC hdc)
 	Pen pen(Color(255,0,0,255));
 	
 	//pietra-----
-	for (int i = 0; i<=lb_pieter; i++)
+	for (int i = 0; i <= lb_pieter; i++)
 	{
-		if (i==0 || i==lb_pieter )
-			graphics.DrawLine(&pen, 0, i * h_pietra,2* winda.l_d_corner_x + winda.width, i * h_pietra);
+		if (i == 0 || i == lb_pieter)
+			graphics.DrawLine(&pen, 0, i * h_pietra, 2 * winda.l_d_corner_x + winda.width, i * h_pietra);
 		else
 		{
 			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, i * h_pietra, 2 * winda.l_d_corner_x + winda.width, i * h_pietra);
 			graphics.DrawLine(&pen, 0, i * h_pietra, winda.l_d_corner_x, i * h_pietra);
 		}
-		if (i%2==0 )
-			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, i * h_pietra, winda.l_d_corner_x + winda.width, (i+1) * h_pietra);
-		else  if(i<lb_pieter)
-			graphics.DrawLine(&pen, winda.l_d_corner_x, i * h_pietra, winda.l_d_corner_x, (i+1) * h_pietra);
+		if (i % 2 == 0)
+			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, i * h_pietra, winda.l_d_corner_x + winda.width, (i + 1) * h_pietra);
+		else  if (i<lb_pieter)
+			graphics.DrawLine(&pen, winda.l_d_corner_x, i * h_pietra, winda.l_d_corner_x, (i + 1) * h_pietra);
 	}
 	//------
-
+	
 	//winda
 	if(value < winda.cel*h_pietra)
 		value++;
@@ -201,9 +202,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    hInst = hInstance; // Store instance handle in our global variable
 
-   hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, 
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
-       HWND hwndButton = CreateWindow(TEXT("button"),
+       
+   HWND hwndButton = CreateWindow(TEXT("button"),//pietro 4;  0
 	   TEXT("0"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   20, 20,
@@ -212,7 +214,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   (HMENU)ID_BUTTON1,
 	   hInstance,
 	   NULL);
-    hwndButton = CreateWindow(TEXT("button"),
+    hwndButton = CreateWindow(TEXT("button"),//pietro 4;  1
 	   TEXT("1"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   40, 20,
@@ -221,7 +223,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   (HMENU)ID_BUTTON2,
 	   hInstance,
 	   NULL);
-    hwndButton = CreateWindow(TEXT("button"),
+    hwndButton = CreateWindow(TEXT("button"),//pietro 4;  2
 	   TEXT("2"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   60, 20,
@@ -230,7 +232,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   (HMENU)ID_BUTTON3,
 	   hInstance,
 	   NULL);
-    hwndButton = CreateWindow(TEXT("button"),
+    hwndButton = CreateWindow(TEXT("button"),//pietro 4;  3
 	   TEXT("3"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   80, 20,
@@ -240,7 +242,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   hInstance,
 	   NULL);
 
-	 hwndButton = CreateWindow(TEXT("button"),
+	 hwndButton = CreateWindow(TEXT("button"),//pietro 3
 		TEXT("0"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1200-80,120,
@@ -249,7 +251,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON5,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 3
 		TEXT("1"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1200-60, 120,
@@ -258,7 +260,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON6,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 3
 		TEXT("2"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1200-40, 120,
@@ -267,7 +269,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON7,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 3
 		TEXT("4"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1200-20, 120,
@@ -277,7 +279,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		hInstance,
 		NULL);
 
-	 hwndButton = CreateWindow(TEXT("button"),
+	 hwndButton = CreateWindow(TEXT("button"),//pietro 2
 		TEXT("0"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		20, 220,
@@ -286,7 +288,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON9,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 2
 		TEXT("1"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		40, 220,
@@ -295,7 +297,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON10,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 2
 		TEXT("3"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		60, 220,
@@ -304,7 +306,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON11,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 2
 		TEXT("4"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		80, 220,
@@ -314,7 +316,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		hInstance,
 		NULL);
 
-	 hwndButton = CreateWindow(TEXT("button"),
+	 hwndButton = CreateWindow(TEXT("button"),//pietro 1
 		TEXT("0"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1120, 320,
@@ -323,7 +325,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON13,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 1
 		TEXT("2"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1140, 320,
@@ -332,7 +334,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON14,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 1
 		TEXT("3"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1160, 320,
@@ -341,7 +343,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON15,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 1
 		TEXT("4"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1180, 320,
@@ -351,7 +353,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		hInstance,
 		NULL);
 
-	 hwndButton = CreateWindow(TEXT("button"),
+	 hwndButton = CreateWindow(TEXT("button"),//pietro 0
 		TEXT("1"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		20, 420,
@@ -360,7 +362,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON17,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 0
 		TEXT("2"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		40, 420,
@@ -369,7 +371,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON18,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 0
 		TEXT("3"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		60, 420,
@@ -378,7 +380,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON19,
 		hInstance,
 		NULL);
-	hwndButton = CreateWindow(TEXT("button"),
+	hwndButton = CreateWindow(TEXT("button"),//pietro 0
 		TEXT("4"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		80, 420,
@@ -432,6 +434,52 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDM_EXIT:
 			DestroyWindow(hWnd);
 			break;
+		//pietro 4
+		case ID_BUTTON1:
+			pietra_tab[4].ludzie.push_back({ 60, 0 });
+		case ID_BUTTON2:
+			pietra_tab[4].ludzie.push_back({ 60, 1 });
+		case ID_BUTTON3:
+			pietra_tab[4].ludzie.push_back({ 60, 2 });
+		case ID_BUTTON4:
+			pietra_tab[4].ludzie.push_back({ 60, 3 });
+
+		case ID_BUTTON5:
+			pietra_tab[3].ludzie.push_back({ 60, 0 });
+		case ID_BUTTON6:
+			pietra_tab[3].ludzie.push_back({ 60, 1 });
+		case ID_BUTTON7:
+			pietra_tab[3].ludzie.push_back({ 60, 2 });
+		case ID_BUTTON8:
+			pietra_tab[3].ludzie.push_back({ 60, 4 });
+
+		case ID_BUTTON9:
+			pietra_tab[2].ludzie.push_back({ 60, 0 });
+		case ID_BUTTON10:
+			pietra_tab[2].ludzie.push_back({ 60, 1 });
+		case ID_BUTTON11:
+			pietra_tab[2].ludzie.push_back({ 60, 3 });
+		case ID_BUTTON12:
+			pietra_tab[2].ludzie.push_back({ 60, 4 });
+
+		case ID_BUTTON13:
+			pietra_tab[1].ludzie.push_back({ 60, 0 });
+		case ID_BUTTON14:
+			pietra_tab[1].ludzie.push_back({ 60, 2 });
+		case ID_BUTTON15:
+			pietra_tab[1].ludzie.push_back({ 60, 3 });
+		case ID_BUTTON16:
+			pietra_tab[1].ludzie.push_back({ 60, 4 });
+
+		case ID_BUTTON17:
+			pietra_tab[0].ludzie.push_back({ 60, 1 });
+		case ID_BUTTON18:
+			pietra_tab[0].ludzie.push_back({ 60, 2 });
+		case ID_BUTTON19:
+			pietra_tab[0].ludzie.push_back({ 60, 3 });
+		case ID_BUTTON20:
+			pietra_tab[0].ludzie.push_back({ 60, 4 });
+
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
