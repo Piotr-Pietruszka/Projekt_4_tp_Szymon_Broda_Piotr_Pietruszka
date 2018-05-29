@@ -73,6 +73,7 @@ void MyOnPaint(HDC hdc)
 
 	Graphics graphics(hdc);
 	Pen pen(Color(255,0,0,255));
+	SolidBrush blackBrush(Color(255, 0, 0, 0));
 	
 	//pietra-----
 	for (int i = 0; i <= lb_pieter; i++)
@@ -95,12 +96,15 @@ void MyOnPaint(HDC hdc)
 		for (int i = 0; i < pietra_tab[j].ludzie.size(); i++)
 		{
 			if (j % 2 == 0)
-				graphics.DrawRectangle(&pen, 450 - (i * 21), (5 - j)*h_pietra - 60, 20, 50);
+				graphics.FillRectangle(&blackBrush, 450 - (i * 21), (5 - j)*h_pietra - 60, 20, 50);
 			else
-				graphics.DrawRectangle(&pen, 750 + (i * 21), (5 - j)*h_pietra - 60, 20, 50);
+				graphics.FillRectangle(&blackBrush, 750 + (i * 21), (5 - j)*h_pietra - 60, 20, 50);
 		}
 	}
-
+	for (int i = 0;i < winda.ludzie.size();i++)
+	{
+		graphics.FillRectangle(&blackBrush, winda.l_d_corner_x + (i * 21) +20 , winda.l_d_corner_y - value+winda.height-50, 20, 50);
+	}
 
 
 	//winda
@@ -118,7 +122,6 @@ void MyOnPaint(HDC hdc)
 				winda.ludzie.erase(winda.ludzie.begin() + i);
 			rozmiar = winda.ludzie.size();
 		}
-		
 
 		int rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
 		bool czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;//czy osiagnieto max liczbe osob w windzie
@@ -139,7 +142,7 @@ void MyOnPaint(HDC hdc)
 		
 		
 		graphics.DrawRectangle(&pen, winda.l_d_corner_x, winda.l_d_corner_y - value, winda.width, winda.height);
-		Sleep(2500);//zatrzymanie windy na pietrze
+		//Sleep(2500);//zatrzymanie windy na pietrze
 	}
 	graphics.DrawRectangle(&pen,winda.l_d_corner_x, winda.l_d_corner_y - value,winda.width, winda.height);
 }
@@ -588,6 +591,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			case TMR_1:
 				//force window to repaint
 				InvalidateRect(hWnd, &drawArea, TRUE);
+				switch (value)
+				{
+				case 0: InvalidateRect(hWnd, &drawArea0, TRUE);break;
+				case 100:InvalidateRect(hWnd, &drawArea1, TRUE);break;
+				case 200:InvalidateRect(hWnd, &drawArea2, TRUE);break;
+				case 300:InvalidateRect(hWnd, &drawArea3, TRUE);break;
+				case 400:InvalidateRect(hWnd, &drawArea4, TRUE);break;
+				default: break;
+				}
 				hdc = BeginPaint(hWnd, &ps);
 				MyOnPaint(hdc);
 				EndPaint(hWnd, &ps);
