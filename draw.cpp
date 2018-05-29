@@ -18,7 +18,7 @@ struct uklad
 	int lb_ludzi;
 	int max_lb;
 };
-
+int pietro = 100;
 
 // Global Variables:
 HINSTANCE hInst;								// current instance
@@ -27,8 +27,9 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
  
 INT value;
 
-uklad winda = {600, 500, 100, 200, 0, 0, 8};
+uklad winda = {500, 300, 100, 200, 0, 0, 8};
 
+RECT drawArea2 = { 500, 0, 700, 400 };
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
@@ -41,8 +42,22 @@ void MyOnPaint(HDC hdc)
 	value++;
 	Graphics graphics(hdc);
 	Pen pen(Color(255,0,0,255));
-	//graphics.DrawLine(&pen,0,0,200,100);
+	graphics.DrawLine(&pen,0,5*pietro, 2 * winda.l_d_corner_x + winda.width,5*pietro);
+	graphics.DrawLine(&pen, 0, 4*pietro, winda.l_d_corner_x, 4 * pietro);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 3 * pietro, 2*winda.l_d_corner_x + winda.width , 3 * pietro);
+	graphics.DrawLine(&pen, 0, 2 * pietro, winda.l_d_corner_x, 2 * pietro);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 1 * pietro,2* winda.l_d_corner_x + winda.width, 1 * pietro);
+	graphics.DrawLine(&pen, 0,  0 * pietro,2* winda.l_d_corner_x + winda.width, 0*pietro);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 4 * pietro,2* winda.l_d_corner_x + winda.width, 4 * pietro);
+	graphics.DrawLine(&pen, 0, 3 * pietro, winda.l_d_corner_x, 3 * pietro);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 2 * pietro,2* winda.l_d_corner_x + winda.width, 2 * pietro);
+	graphics.DrawLine(&pen, 0, 1 * pietro, winda.l_d_corner_x, 1 * pietro);
 
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 0 * pietro, winda.l_d_corner_x + winda.width, 1 * pietro);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 2 * pietro, winda.l_d_corner_x + winda.width, 3 * pietro);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 4 * pietro, winda.l_d_corner_x + winda.width, 5 * pietro);
+	graphics.DrawLine(&pen, winda.l_d_corner_x, 1 * pietro, winda.l_d_corner_x, 2 * pietro);
+	graphics.DrawLine(&pen, winda.l_d_corner_x, 3 * pietro, winda.l_d_corner_x, 4 * pietro);
 	graphics.DrawRectangle(&pen,winda.l_d_corner_x, winda.l_d_corner_y,winda.width, winda.height);
 }
 
