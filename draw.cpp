@@ -40,6 +40,7 @@ struct pietro
 
 const int lb_pieter = 5;
 int h_pietra = 100;
+int color;
 
 pietro pietra_tab[lb_pieter];//tab pieter
 							 //--------------
@@ -54,11 +55,11 @@ INT value;
 uklad winda = {500, 400, 100, 200, /*cel*/2, 0, 8, false, 2};
 
 RECT drawArea = { 500, 0, 701, 500 };
-RECT drawArea0 = { 0, 401, 500, 499 };
-RECT drawArea1 = { 701, 301, 1200, 399 };
-RECT drawArea2 = { 0, 201, 500, 299 };
-RECT drawArea3 = { 701, 101, 1200, 199 };
-RECT drawArea4 = { 0, 1, 500, 99 };
+RECT drawArea0 = { 101, 401, 500, 499 };
+RECT drawArea1 = { 701, 301, 1100, 399 };
+RECT drawArea2 = { 101, 201, 500, 299 };
+RECT drawArea3 = { 701, 101, 1100, 199 };
+RECT drawArea4 = { 101, 1, 500, 99 };
 //RECT drawArea2 = { winda.l_d_corner_x,winda.l_d_corner_y, winda.l_d_corner_x + winda.width, winda.l_d_corner_y + winda.height, };
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -73,7 +74,7 @@ void MyOnPaint(HDC hdc)
 
 	Graphics graphics(hdc);
 	Pen pen(Color(255,0,0,255));
-	SolidBrush blackBrush(Color(255, 0, 0, 0));
+	SolidBrush Brush(Color(255, 0, 0, 0));
 	
 	//pietra-----
 	for (int i = 0; i <= lb_pieter; i++)
@@ -82,28 +83,30 @@ void MyOnPaint(HDC hdc)
 			graphics.DrawLine(&pen, 0, i * h_pietra, 2 * winda.l_d_corner_x + winda.width, i * h_pietra);
 		else
 		{
-			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, i * h_pietra, 2 * winda.l_d_corner_x + winda.width, i * h_pietra);
-			graphics.DrawLine(&pen, 0, i * h_pietra, winda.l_d_corner_x, i * h_pietra);
+			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width +1, i * h_pietra, 2 * winda.l_d_corner_x + winda.width, i * h_pietra);
+			graphics.DrawLine(&pen, 0, i * h_pietra, winda.l_d_corner_x - 1, i * h_pietra);
 		}
 		if (i % 2 == 0)
-			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, i * h_pietra, winda.l_d_corner_x + winda.width, (i + 1) * h_pietra);
+			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width + 1, i * h_pietra, winda.l_d_corner_x + winda.width + 1, (i + 1) * h_pietra);
 		else  if (i < lb_pieter)
-			graphics.DrawLine(&pen, winda.l_d_corner_x, i * h_pietra, winda.l_d_corner_x, (i + 1) * h_pietra);
+			graphics.DrawLine(&pen, winda.l_d_corner_x - 1, i * h_pietra, winda.l_d_corner_x - 1, (i + 1) * h_pietra);
 	}
 	//------
 	for (int j = 0; j <lb_pieter; j++)
 	{
 		for (int i = 0; i < pietra_tab[j].ludzie.size(); i++)
 		{
+			SolidBrush Brush(Color((pietra_tab[j].ludzie[i].cel+1) * 50, 0, 0, pietra_tab[j].ludzie[i].cel * 200));
 			if (j % 2 == 0)
-				graphics.FillRectangle(&blackBrush, 450 - (i * 21), (5 - j)*h_pietra - 60, 20, 50);
+				graphics.FillRectangle(&Brush, 450 - (i * 21), (5 - j)*h_pietra - 60, 20, 50);
 			else
-				graphics.FillRectangle(&blackBrush, 750 + (i * 21), (5 - j)*h_pietra - 60, 20, 50);
+				graphics.FillRectangle(&Brush, 750 + (i * 21), (5 - j)*h_pietra - 60, 20, 50);
 		}
 	}
 	for (int i = 0;i < winda.ludzie.size();i++)
 	{
-		graphics.FillRectangle(&blackBrush, winda.l_d_corner_x + (i * 21) +20 , winda.l_d_corner_y - value+winda.height-50, 20, 50);
+		SolidBrush Brush(Color((winda.ludzie[i].cel+1) * 50, 0, 0, winda.ludzie[i].cel*200));
+		graphics.FillRectangle(&Brush, winda.l_d_corner_x + (i * 21) +20 , winda.l_d_corner_y - value+winda.height-50, 20, 50);
 	}
 
 
@@ -591,15 +594,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			case TMR_1:
 				//force window to repaint
 				InvalidateRect(hWnd, &drawArea, TRUE);
-				switch (value)
-				{
-				case 0: InvalidateRect(hWnd, &drawArea0, TRUE);break;
-				case 100:InvalidateRect(hWnd, &drawArea1, TRUE);break;
-				case 200:InvalidateRect(hWnd, &drawArea2, TRUE);break;
-				case 300:InvalidateRect(hWnd, &drawArea3, TRUE);break;
-				case 400:InvalidateRect(hWnd, &drawArea4, TRUE);break;
-				default: break;
-				}
+					switch (value)
+					{
+					case 0: InvalidateRect(hWnd, &drawArea0, TRUE);break;
+					case 100:InvalidateRect(hWnd, &drawArea1, TRUE);break;
+					case 200:InvalidateRect(hWnd, &drawArea2, TRUE);break;
+					case 300:InvalidateRect(hWnd, &drawArea3, TRUE);break;
+					case 400:InvalidateRect(hWnd, &drawArea4, TRUE);break;
+					default: break;
+					}
 				hdc = BeginPaint(hWnd, &ps);
 				MyOnPaint(hdc);
 				EndPaint(hWnd, &ps);
