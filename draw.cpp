@@ -64,22 +64,20 @@ void MyOnPaint(HDC hdc)
 	Pen pen(Color(255,0,0,255));
 	
 	//pietra-----
-	graphics.DrawLine(&pen, 0, 5 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 5 * h_pietra);
-	graphics.DrawLine(&pen, 0, 4 * h_pietra, winda.l_d_corner_x, 4 * h_pietra);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 3 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 3 * h_pietra);
-	graphics.DrawLine(&pen, 0, 2 * h_pietra, winda.l_d_corner_x, 2 * h_pietra);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 1 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 1 * h_pietra);
-	graphics.DrawLine(&pen, 0, 0 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 0 * h_pietra);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 4 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 4 * h_pietra);
-	graphics.DrawLine(&pen, 0, 3 * h_pietra, winda.l_d_corner_x, 3 * h_pietra);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 2 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 2 * h_pietra);
-	graphics.DrawLine(&pen, 0, 1 * h_pietra, winda.l_d_corner_x, 1 * h_pietra);
-
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 0 * h_pietra, winda.l_d_corner_x + winda.width, 1 * h_pietra);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 2 * h_pietra, winda.l_d_corner_x + winda.width, 3 * h_pietra);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 4 * h_pietra, winda.l_d_corner_x + winda.width, 5 * h_pietra);
-	graphics.DrawLine(&pen, winda.l_d_corner_x, 1 * h_pietra, winda.l_d_corner_x, 2 * h_pietra);
-	graphics.DrawLine(&pen, winda.l_d_corner_x, 3 * h_pietra, winda.l_d_corner_x, 4 * h_pietra);
+	for (int i = 0; i<=lb_pieter; i++)
+	{
+		if (i==0 || i==lb_pieter )
+			graphics.DrawLine(&pen, 0, i * h_pietra,2* winda.l_d_corner_x + winda.width, i * h_pietra);
+		else
+		{
+			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, i * h_pietra, 2 * winda.l_d_corner_x + winda.width, i * h_pietra);
+			graphics.DrawLine(&pen, 0, i * h_pietra, winda.l_d_corner_x, i * h_pietra);
+		}
+		if (i%2==0 )
+			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, i * h_pietra, winda.l_d_corner_x + winda.width, (i+1) * h_pietra);
+		else  if(i<lb_pieter)
+			graphics.DrawLine(&pen, winda.l_d_corner_x, i * h_pietra, winda.l_d_corner_x, (i+1) * h_pietra);
+	}
 	//------
 
 	//winda
