@@ -48,7 +48,12 @@ INT value;
 
 uklad winda = {500, 400, 100, 200, /*cel*/2, 0, 8};
 
-RECT drawArea2 = { 500, 0, 701, 500};
+RECT drawArea = { 500, 0, 701, 500};
+RECT drawArea0 = { 0, 401, 500, 499 };
+RECT drawArea1 = { 701, 301, 1200, 399 };
+RECT drawArea2 = { 0, 201, 500, 299 };
+RECT drawArea3 = { 701, 101, 1200, 199 };
+RECT drawArea4 = { 0, 1, 500, 99 };
 //RECT drawArea2 = { winda.l_d_corner_x,winda.l_d_corner_y, winda.l_d_corner_x + winda.width, winda.l_d_corner_y + winda.height, };
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
