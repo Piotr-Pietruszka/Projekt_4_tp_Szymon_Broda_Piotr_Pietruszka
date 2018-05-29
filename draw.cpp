@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "draw.h"
+#include "vector"
 
 #define MAX_LOADSTRING 100
 #define TMR_1 1
@@ -18,7 +19,25 @@ struct uklad
 	int lb_ludzi;
 	int max_lb;
 };
-int pietro = 100;
+//-----------------------
+struct czlowiek
+{
+	int waga = 60;
+	int cel;
+	//int pozycja;//0-4 - pietra -1 lub cos innego - winda
+	//alternatywnie utworzenie struktury pietro
+};
+
+struct pietro
+{
+	std::vector <czlowiek> ludzie;
+};
+
+const int lb_pieter = 5;
+int h_pietra = 100;
+
+pietro pietra_tab[lb_pieter];//tab pieter
+							 //--------------
 
 // Global Variables:
 HINSTANCE hInst;								// current instance
@@ -27,7 +46,7 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
  
 INT value;
 
-uklad winda = {500, 300, 100, 200, /*cel*/0, 0, 8};
+uklad winda = {500, 400, 100, 200, /*cel*/2, 0, 8};
 
 RECT drawArea2 = { 500, 0, 700, 400 };
 // Forward declarations of functions included in this code module:
@@ -45,32 +64,34 @@ void MyOnPaint(HDC hdc)
 	Pen pen(Color(255,0,0,255));
 	
 	//pietra-----
-	graphics.DrawLine(&pen,0,5*pietro, 2 * winda.l_d_corner_x + winda.width,5*pietro);
-	graphics.DrawLine(&pen, 0, 4*pietro, winda.l_d_corner_x, 4 * pietro);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 3 * pietro, 2*winda.l_d_corner_x + winda.width , 3 * pietro);
-	graphics.DrawLine(&pen, 0, 2 * pietro, winda.l_d_corner_x, 2 * pietro);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 1 * pietro,2* winda.l_d_corner_x + winda.width, 1 * pietro);
-	graphics.DrawLine(&pen, 0,  0 * pietro,2* winda.l_d_corner_x + winda.width, 0*pietro);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 4 * pietro,2* winda.l_d_corner_x + winda.width, 4 * pietro);
-	graphics.DrawLine(&pen, 0, 3 * pietro, winda.l_d_corner_x, 3 * pietro);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 2 * pietro,2* winda.l_d_corner_x + winda.width, 2 * pietro);
-	graphics.DrawLine(&pen, 0, 1 * pietro, winda.l_d_corner_x, 1 * pietro);
+	graphics.DrawLine(&pen, 0, 5 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 5 * h_pietra);
+	graphics.DrawLine(&pen, 0, 4 * h_pietra, winda.l_d_corner_x, 4 * h_pietra);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 3 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 3 * h_pietra);
+	graphics.DrawLine(&pen, 0, 2 * h_pietra, winda.l_d_corner_x, 2 * h_pietra);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 1 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 1 * h_pietra);
+	graphics.DrawLine(&pen, 0, 0 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 0 * h_pietra);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 4 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 4 * h_pietra);
+	graphics.DrawLine(&pen, 0, 3 * h_pietra, winda.l_d_corner_x, 3 * h_pietra);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 2 * h_pietra, 2 * winda.l_d_corner_x + winda.width, 2 * h_pietra);
+	graphics.DrawLine(&pen, 0, 1 * h_pietra, winda.l_d_corner_x, 1 * h_pietra);
 
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 0 * pietro, winda.l_d_corner_x + winda.width, 1 * pietro);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 2 * pietro, winda.l_d_corner_x + winda.width, 3 * pietro);
-	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 4 * pietro, winda.l_d_corner_x + winda.width, 5 * pietro);
-	graphics.DrawLine(&pen, winda.l_d_corner_x, 1 * pietro, winda.l_d_corner_x, 2 * pietro);
-	graphics.DrawLine(&pen, winda.l_d_corner_x, 3 * pietro, winda.l_d_corner_x, 4 * pietro);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 0 * h_pietra, winda.l_d_corner_x + winda.width, 1 * h_pietra);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 2 * h_pietra, winda.l_d_corner_x + winda.width, 3 * h_pietra);
+	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 4 * h_pietra, winda.l_d_corner_x + winda.width, 5 * h_pietra);
+	graphics.DrawLine(&pen, winda.l_d_corner_x, 1 * h_pietra, winda.l_d_corner_x, 2 * h_pietra);
+	graphics.DrawLine(&pen, winda.l_d_corner_x, 3 * h_pietra, winda.l_d_corner_x, 4 * h_pietra);
 	//------
 
 	//winda
-	if(value < winda.cel*pietro)
+	if(value < winda.cel*h_pietra)
 		value++;
-	else if (value > winda.cel*pietro)
+	else if (value > winda.cel*h_pietra)
 		value--;
 	else
 	{
-		//zatrzymanie i zmiana celu windy
+		winda.cel--;
+		graphics.DrawRectangle(&pen, winda.l_d_corner_x, winda.l_d_corner_y - value, winda.width, winda.height);
+		Sleep(2500);//zatrzymanie windy na pietrze
 	}
 	graphics.DrawRectangle(&pen,winda.l_d_corner_x, winda.l_d_corner_y - value,winda.width, winda.height);
 }
@@ -185,7 +206,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
        HWND hwndButton = CreateWindow(TEXT("button"),
-	   TEXT("1"),
+	   TEXT("0"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   20, 20,
 	   20,20,
@@ -194,7 +215,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   hInstance,
 	   NULL);
     hwndButton = CreateWindow(TEXT("button"),
-	   TEXT("2"),
+	   TEXT("1"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   40, 20,
 	   20, 20,
@@ -203,7 +224,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   hInstance,
 	   NULL);
     hwndButton = CreateWindow(TEXT("button"),
-	   TEXT("3"),
+	   TEXT("2"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   60, 20,
 	   20, 20,
@@ -212,7 +233,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   hInstance,
 	   NULL);
     hwndButton = CreateWindow(TEXT("button"),
-	   TEXT("4"),
+	   TEXT("3"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   80, 20,
 	   20, 20,
@@ -220,8 +241,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   (HMENU)ID_BUTTON4,
 	   hInstance,
 	   NULL);
+
 	 hwndButton = CreateWindow(TEXT("button"),
-		TEXT("1"),
+		TEXT("0"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1200-80,120,
 		20, 20,
@@ -230,7 +252,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		hInstance,
 		NULL);
 	hwndButton = CreateWindow(TEXT("button"),
-		TEXT("2"),
+		TEXT("1"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1200-60, 120,
 		20, 20,
@@ -239,7 +261,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		hInstance,
 		NULL);
 	hwndButton = CreateWindow(TEXT("button"),
-		TEXT("3"),
+		TEXT("2"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1200-40, 120,
 		20, 20,
@@ -256,8 +278,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON8,
 		hInstance,
 		NULL);
+
 	 hwndButton = CreateWindow(TEXT("button"),
-		TEXT("1"),
+		TEXT("0"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		20, 220,
 		20, 20,
@@ -266,7 +289,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		hInstance,
 		NULL);
 	hwndButton = CreateWindow(TEXT("button"),
-		TEXT("2"),
+		TEXT("1"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		40, 220,
 		20, 20,
@@ -292,8 +315,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON12,
 		hInstance,
 		NULL);
+
 	 hwndButton = CreateWindow(TEXT("button"),
-		TEXT("1"),
+		TEXT("0"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 		1120, 320,
 		20, 20,
@@ -328,6 +352,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 		(HMENU)ID_BUTTON16,
 		hInstance,
 		NULL);
+
 	 hwndButton = CreateWindow(TEXT("button"),
 		TEXT("1"),
 		WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
