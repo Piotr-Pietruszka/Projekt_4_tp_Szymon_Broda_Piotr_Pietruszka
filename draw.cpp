@@ -27,7 +27,7 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
  
 INT value;
 
-uklad winda = {500, 300, 100, 200, 0, 0, 8};
+uklad winda = {500, 300, 100, 200, /*cel*/0, 0, 8};
 
 RECT drawArea2 = { 500, 0, 700, 400 };
 // Forward declarations of functions included in this code module:
@@ -39,9 +39,12 @@ INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
 void MyOnPaint(HDC hdc)
 {
-	value++;
+	
+
 	Graphics graphics(hdc);
 	Pen pen(Color(255,0,0,255));
+	
+	//pietra-----
 	graphics.DrawLine(&pen,0,5*pietro, 2 * winda.l_d_corner_x + winda.width,5*pietro);
 	graphics.DrawLine(&pen, 0, 4*pietro, winda.l_d_corner_x, 4 * pietro);
 	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 3 * pietro, 2*winda.l_d_corner_x + winda.width , 3 * pietro);
@@ -58,7 +61,18 @@ void MyOnPaint(HDC hdc)
 	graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, 4 * pietro, winda.l_d_corner_x + winda.width, 5 * pietro);
 	graphics.DrawLine(&pen, winda.l_d_corner_x, 1 * pietro, winda.l_d_corner_x, 2 * pietro);
 	graphics.DrawLine(&pen, winda.l_d_corner_x, 3 * pietro, winda.l_d_corner_x, 4 * pietro);
-	graphics.DrawRectangle(&pen,winda.l_d_corner_x, winda.l_d_corner_y,winda.width, winda.height);
+	//------
+
+	//winda
+	if(value < winda.cel*pietro)
+		value++;
+	else if (value > winda.cel*pietro)
+		value--;
+	else
+	{
+		//zatrzymanie i zmiana celu windy
+	}
+	graphics.DrawRectangle(&pen,winda.l_d_corner_x, winda.l_d_corner_y - value,winda.width, winda.height);
 }
 
 
@@ -82,7 +96,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	MSG msg;
 	HACCEL hAccelTable;
 
-	value= 10;
+	value= 0;
 
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR           gdiplusToken;
