@@ -48,7 +48,7 @@ INT value;
 
 uklad winda = {500, 400, 100, 200, /*cel*/2, 0, 8};
 
-RECT drawArea2 = { 500, 0, 700, 400 };
+RECT drawArea2 = { winda.l_d_corner_x,winda.l_d_corner_y, winda.l_d_corner_x + winda.width, winda.l_d_corner_y + winda.height, };
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
@@ -453,7 +453,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			case TMR_1:
 				//force window to repaint
-				InvalidateRect(hWnd, NULL, TRUE);
+				InvalidateRect(hWnd, &drawArea2, TRUE);
 				hdc = BeginPaint(hWnd, &ps);
 				MyOnPaint(hdc);
 				EndPaint(hWnd, &ps);
