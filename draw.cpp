@@ -80,7 +80,16 @@ void MyOnPaint(HDC hdc)
 			graphics.DrawLine(&pen, winda.l_d_corner_x, i * h_pietra, winda.l_d_corner_x, (i + 1) * h_pietra);
 	}
 	//------
-	
+	for (int j = 0 ;j <lb_pieter;j++)
+	{
+		for (int i = 0;i < pietra_tab[j].ludzie.size();i++)
+		{
+			if(j%2==0)
+				graphics.DrawRectangle(&pen, 450-(i*21),(5-j)*h_pietra -60,20,50);
+			else 
+				graphics.DrawRectangle(&pen, 750 + (i * 21), (5-j)*h_pietra -60, 20,50);
+		}
+	}
 	//winda
 	if(value < winda.cel*h_pietra)
 		value++;
@@ -437,48 +446,88 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		//pietro 4
 		case ID_BUTTON1:
 			pietra_tab[4].ludzie.push_back({ 60, 0 });
+			InvalidateRect(hWnd, &drawArea4, TRUE);
+			break;
 		case ID_BUTTON2:
 			pietra_tab[4].ludzie.push_back({ 60, 1 });
+			InvalidateRect(hWnd, &drawArea4, TRUE);
+			break;
 		case ID_BUTTON3:
 			pietra_tab[4].ludzie.push_back({ 60, 2 });
+			InvalidateRect(hWnd, &drawArea4, TRUE);
+			break;
 		case ID_BUTTON4:
 			pietra_tab[4].ludzie.push_back({ 60, 3 });
+			InvalidateRect(hWnd, &drawArea4, TRUE);
+			break;
 
 		case ID_BUTTON5:
 			pietra_tab[3].ludzie.push_back({ 60, 0 });
+			InvalidateRect(hWnd, &drawArea3, TRUE);
+			break;
 		case ID_BUTTON6:
 			pietra_tab[3].ludzie.push_back({ 60, 1 });
+			InvalidateRect(hWnd, &drawArea3, TRUE);
+			break;
 		case ID_BUTTON7:
 			pietra_tab[3].ludzie.push_back({ 60, 2 });
+			InvalidateRect(hWnd, &drawArea3, TRUE);
+			break;
 		case ID_BUTTON8:
 			pietra_tab[3].ludzie.push_back({ 60, 4 });
+			InvalidateRect(hWnd, &drawArea3, TRUE);
+			break;
 
 		case ID_BUTTON9:
 			pietra_tab[2].ludzie.push_back({ 60, 0 });
+			InvalidateRect(hWnd, &drawArea2, TRUE);
+			break;
 		case ID_BUTTON10:
 			pietra_tab[2].ludzie.push_back({ 60, 1 });
+			InvalidateRect(hWnd, &drawArea2, TRUE);
+			break;
 		case ID_BUTTON11:
 			pietra_tab[2].ludzie.push_back({ 60, 3 });
+			InvalidateRect(hWnd, &drawArea2, TRUE);
+			break;
 		case ID_BUTTON12:
 			pietra_tab[2].ludzie.push_back({ 60, 4 });
+			InvalidateRect(hWnd, &drawArea2, TRUE);
+			break;
 
 		case ID_BUTTON13:
 			pietra_tab[1].ludzie.push_back({ 60, 0 });
+			InvalidateRect(hWnd, &drawArea1, TRUE);
+			break;
 		case ID_BUTTON14:
 			pietra_tab[1].ludzie.push_back({ 60, 2 });
+			InvalidateRect(hWnd, &drawArea1, TRUE);
+			break;
 		case ID_BUTTON15:
 			pietra_tab[1].ludzie.push_back({ 60, 3 });
+			InvalidateRect(hWnd, &drawArea1, TRUE);
+			break;
 		case ID_BUTTON16:
 			pietra_tab[1].ludzie.push_back({ 60, 4 });
+			InvalidateRect(hWnd, &drawArea1, TRUE);
+			break;
 
 		case ID_BUTTON17:
 			pietra_tab[0].ludzie.push_back({ 60, 1 });
+			InvalidateRect(hWnd, &drawArea0, TRUE);
+			break;
 		case ID_BUTTON18:
 			pietra_tab[0].ludzie.push_back({ 60, 2 });
+			InvalidateRect(hWnd, &drawArea0, TRUE);
+			break;
 		case ID_BUTTON19:
 			pietra_tab[0].ludzie.push_back({ 60, 3 });
+			InvalidateRect(hWnd, &drawArea0, TRUE);
+			break;
 		case ID_BUTTON20:
 			pietra_tab[0].ludzie.push_back({ 60, 4 });
+			InvalidateRect(hWnd, &drawArea0, TRUE);
+			break;
 
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
