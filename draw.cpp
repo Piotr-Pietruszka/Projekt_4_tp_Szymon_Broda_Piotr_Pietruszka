@@ -6,13 +6,28 @@
 
 #define MAX_LOADSTRING 100
 #define TMR_1 1
+//struktury
+struct uklad
+{
+	const int l_d_corner_x;
+	int l_d_corner_y;
+	int height;
+	int width;
+
+	int cel;
+	int lb_ludzi;
+	int max_lb;
+};
+
 
 // Global Variables:
 HINSTANCE hInst;								// current instance
 TCHAR szTitle[MAX_LOADSTRING];					// The title bar text
 TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
-
+ 
 INT value;
+
+uklad winda = {600, 500, 100, 200, 0, 0, 8};
 
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
@@ -28,7 +43,7 @@ void MyOnPaint(HDC hdc)
 	Pen pen(Color(255,0,0,255));
 	//graphics.DrawLine(&pen,0,0,200,100);
 
-	graphics.DrawRectangle(&pen,100+value,100,10, 20);
+	graphics.DrawRectangle(&pen,winda.l_d_corner_x, winda.l_d_corner_y,winda.width, winda.height);
 }
 
 
