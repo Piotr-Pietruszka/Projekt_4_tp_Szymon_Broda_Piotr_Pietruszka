@@ -48,7 +48,7 @@ INT value;
 
 uklad winda = {500, 400, 100, 200, /*cel*/2, 0, 8};
 
-RECT drawArea2 = { winda.l_d_corner_x,winda.l_d_corner_y, winda.l_d_corner_x + winda.width, winda.l_d_corner_y + winda.height, };
+RECT drawArea2 = { 500,0,701,500};
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
