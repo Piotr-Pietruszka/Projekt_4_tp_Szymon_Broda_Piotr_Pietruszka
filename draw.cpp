@@ -8,6 +8,14 @@
 #define MAX_LOADSTRING 100
 #define TMR_1 1
 //struktury
+struct czlowiek
+{
+	int waga = 60;
+	int cel;
+	//int pozycja;//0-4 - pietra -1 lub cos innego - winda
+	//alternatywnie utworzenie struktury pietro
+};
+
 struct uklad
 {
 	const int l_d_corner_x;
@@ -18,14 +26,11 @@ struct uklad
 	int cel;
 	int lb_ludzi;
 	int max_lb;
-};
-//-----------------------
-struct czlowiek
-{
-	int waga = 60;
-	int cel;
-	//int pozycja;//0-4 - pietra -1 lub cos innego - winda
-	//alternatywnie utworzenie struktury pietro
+
+	//-------
+	bool open;//czy otwarta
+	int cel_1;//do ktorego winda aktualnnie jedzie, cel po drodze
+	std::vector <czlowiek> ludzie;
 };
 
 struct pietro
@@ -46,9 +51,9 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
  
 INT value;
 
-uklad winda = {500, 400, 100, 200, /*cel*/2, 0, 8};
+uklad winda = {500, 400, 100, 200, /*cel*/2, 0, 8, false, 2};
 
-RECT drawArea = { 500, 0, 701, 500};
+RECT drawArea = { 500, 0, 701, 500 };
 RECT drawArea0 = { 0, 401, 500, 499 };
 RECT drawArea1 = { 701, 301, 1200, 399 };
 RECT drawArea2 = { 0, 201, 500, 299 };
@@ -81,28 +86,58 @@ void MyOnPaint(HDC hdc)
 		}
 		if (i % 2 == 0)
 			graphics.DrawLine(&pen, winda.l_d_corner_x + winda.width, i * h_pietra, winda.l_d_corner_x + winda.width, (i + 1) * h_pietra);
-		else  if (i<lb_pieter)
+		else  if (i < lb_pieter)
 			graphics.DrawLine(&pen, winda.l_d_corner_x, i * h_pietra, winda.l_d_corner_x, (i + 1) * h_pietra);
 	}
 	//------
-	for (int j = 0 ;j <lb_pieter;j++)
+	for (int j = 0; j <lb_pieter; j++)
 	{
-		for (int i = 0;i < pietra_tab[j].ludzie.size();i++)
+		for (int i = 0; i < pietra_tab[j].ludzie.size(); i++)
 		{
-			if(j%2==0)
-				graphics.DrawRectangle(&pen, 450-(i*21),(5-j)*h_pietra -60,20,50);
-			else 
-				graphics.DrawRectangle(&pen, 750 + (i * 21), (5-j)*h_pietra -60, 20,50);
+			if (j % 2 == 0)
+				graphics.DrawRectangle(&pen, 450 - (i * 21), (5 - j)*h_pietra - 60, 20, 50);
+			else
+				graphics.DrawRectangle(&pen, 750 + (i * 21), (5 - j)*h_pietra - 60, 20, 50);
 		}
 	}
+
+
+
 	//winda
-	if(value < winda.cel*h_pietra)
+	if(value < winda.cel_1*h_pietra)
 		value++;
-	else if (value > winda.cel*h_pietra)
+	else if (value > winda.cel_1*h_pietra)
 		value--;
-	else
+	else //value == winda.cel_1*h_pietra
 	{
-		winda.cel--;
+		
+		int rozmiar = winda.ludzie.size();
+		for (int i = 0; i < rozmiar; i++)
+		{
+			if (winda.ludzie[i].cel == winda.cel_1)
+				winda.ludzie.erase(winda.ludzie.begin() + i);
+			rozmiar = winda.ludzie.size();
+		}
+		
+
+		int rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
+		bool czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;//czy osiagnieto max liczbe osob w windzie
+		for (int i = 0; i < rozmiar_1 && !czy_max; i++)
+		{
+			if (!czy_max)
+			{
+				winda.ludzie.push_back(pietra_tab[winda.cel_1].ludzie[i]);
+				pietra_tab[winda.cel_1].ludzie.erase(pietra_tab[winda.cel_1].ludzie.begin());
+			}
+			rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
+			czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;
+		}
+
+		if (rozmiar != 0)
+			winda.cel_1 = winda.ludzie.front().cel;//odwolanie do celu pierwszego elementu
+			
+		
+		
 		graphics.DrawRectangle(&pen, winda.l_d_corner_x, winda.l_d_corner_y - value, winda.width, winda.height);
 		Sleep(2500);//zatrzymanie windy na pietrze
 	}
@@ -533,7 +568,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			pietra_tab[0].ludzie.push_back({ 60, 4 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
 			break;
-
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
@@ -553,7 +587,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		{
 			case TMR_1:
 				//force window to repaint
-				InvalidateRect(hWnd, &drawArea2, TRUE);
+				InvalidateRect(hWnd, &drawArea, TRUE);
 				hdc = BeginPaint(hWnd, &ps);
 				MyOnPaint(hdc);
 				EndPaint(hWnd, &ps);
