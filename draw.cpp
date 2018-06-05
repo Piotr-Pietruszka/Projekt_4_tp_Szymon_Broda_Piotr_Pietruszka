@@ -37,14 +37,10 @@ struct pietro
 {
 	std::vector <czlowiek> ludzie;
 };
-struct kolejnosc{
-	int nr_pietra_p;
-	int nr_pietra_d;
-};
-int dl_kolejki = 0;
+
 const int lb_pieter = 5;
 int h_pietra = 100;
-std::vector<kolejnosc> dane;
+int color;
 
 pietro pietra_tab[lb_pieter];//tab pieter
 							 //--------------
@@ -56,7 +52,7 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
  
 INT value;
 
-uklad winda = {500, 400, 100, 200, /*cel*/2, 0, 8, false, 2};
+uklad winda = {500, 400, 100, 200, /*cel*/4, 0, 8, false, 4};
 
 RECT drawArea = { 500, 0, 701, 500 };
 RECT drawArea0 = { 101, 401, 500, 499 };
@@ -112,55 +108,54 @@ void MyOnPaint(HDC hdc)
 		SolidBrush Brush(Color((winda.ludzie[i].cel+1) * 50, 0, 0, winda.ludzie[i].cel*200));
 		graphics.FillRectangle(&Brush, winda.l_d_corner_x + (i * 21) +20 , winda.l_d_corner_y - value+winda.height-50, 20, 50);
 	}
-	
+
 
 	//winda
-	if(value < winda.cel_1*h_pietra)
+	if (value < winda.cel_1*h_pietra)
 		value++;
 	else if (value > winda.cel_1*h_pietra)
 		value--;
 	else //value == winda.cel_1*h_pietra
 	{
-		
+
 		int rozmiar = winda.ludzie.size();
-		for (int i = 0; i < rozmiar; i++)
+		for (int i = 0; i < rozmiar; )
 		{
-			if (winda.ludzie[i].cel == winda.cel_1)
-				winda.ludzie.erase(winda.ludzie.begin() + i);
+			i++;
+			//rozmiar = winda.ludzie.size();
+			if (winda.ludzie[i-1].cel == winda.cel_1)
+			{
+				winda.ludzie.erase(winda.ludzie.begin() + i-1);
+				i = 0;
+			}
+
 			rozmiar = winda.ludzie.size();
 		}
 
 		int rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
 		bool czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;//czy osiagnieto max liczbe osob w windzie
-		////-----------------------------------------------------------------------------------------------------------------------------TUTAJ
-		if (value < winda.cel_1*h_pietra)
-		{
-			for(int i=0;i<dane.size();i++)
-			{ }
-		}
-		/////----------------------------------------------------
-		for (int i = 0; i < pietra_tab[winda.cel_1].ludzie.size() && !czy_max; i++)
+		for (int i = 0; i < rozmiar_1 && !czy_max; i++)
 		{
 			if (!czy_max)
 			{
-				//////------------------------------------------
-				winda.ludzie.push_back(pietra_tab[winda.cel_1].ludzie[i]);
+				winda.ludzie.push_back(pietra_tab[winda.cel_1].ludzie[0]);
 				pietra_tab[winda.cel_1].ludzie.erase(pietra_tab[winda.cel_1].ludzie.begin());
 			}
-			//rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
 			czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;
 		}
 
 		if (rozmiar != 0)
-			winda.cel_1 = winda.ludzie.front().cel;//odwolanie do celu pierwszego elementu
-			
-		
-		
-		graphics.DrawRectangle(&pen, winda.l_d_corner_x, winda.l_d_corner_y - value, winda.width, winda.height);
-		//Sleep(2500);//zatrzymanie windy na pietrze
-	}
-	graphics.DrawRectangle(&pen,winda.l_d_corner_x, winda.l_d_corner_y - value,winda.width, winda.height);
+			winda.cel = winda.ludzie.front().cel;//odwolanie do celu pierwszego elementu// nie obsluguje przypadku, gdy najpierw ktos(czl_1) wezwie
+												 // winde, a po drodze ktos(czl_2) wsiadzie i bedzie chcial jechac w innym kierunku
+												 //zrobic najlepiej tak, ze jesli chce jechac w dol to winda sie nie zatrzyma
+												 // co jesli czl_2 bedzie chcial jechac wyzej niz czl_1??
 
+		winda.cel_1 = winda.cel;
+
+		graphics.DrawRectangle(&pen, winda.l_d_corner_x, winda.l_d_corner_y - value, winda.width, winda.height);
+		Sleep(500);//zatrzymanie windy na pietrze
+	}
+	graphics.DrawRectangle(&pen, winda.l_d_corner_x, winda.l_d_corner_y - value, winda.width, winda.height);
 }
 
 
@@ -506,146 +501,86 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case ID_BUTTON1:
 			pietra_tab[4].ludzie.push_back({ 60, 0 });
 			InvalidateRect(hWnd, &drawArea4, TRUE);
-			dane[dl_kolejki].nr_pietra_p==4;
-			dane[dl_kolejki].nr_pietra_d = 0;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON2:
 			pietra_tab[4].ludzie.push_back({ 60, 1 });
 			InvalidateRect(hWnd, &drawArea4, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 4;
-			dane[dl_kolejki].nr_pietra_d = 1;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON3:
 			pietra_tab[4].ludzie.push_back({ 60, 2 });
 			InvalidateRect(hWnd, &drawArea4, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 4;
-			dane[dl_kolejki].nr_pietra_d = 2;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON4:
 			pietra_tab[4].ludzie.push_back({ 60, 3 });
 			InvalidateRect(hWnd, &drawArea4, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 4;
-			dane[dl_kolejki].nr_pietra_d = 3;
-			dl_kolejki++;
 			break;
 
 		case ID_BUTTON5:
 			pietra_tab[3].ludzie.push_back({ 60, 0 });
 			InvalidateRect(hWnd, &drawArea3, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 3;
-			dane[dl_kolejki].nr_pietra_d = 0;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON6:
 			pietra_tab[3].ludzie.push_back({ 60, 1 });
 			InvalidateRect(hWnd, &drawArea3, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 3;
-			dane[dl_kolejki].nr_pietra_d = 1;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON7:
 			pietra_tab[3].ludzie.push_back({ 60, 2 });
 			InvalidateRect(hWnd, &drawArea3, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 3;
-			dane[dl_kolejki].nr_pietra_d = 2;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON8:
 			pietra_tab[3].ludzie.push_back({ 60, 4 });
 			InvalidateRect(hWnd, &drawArea3, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 3;
-			dane[dl_kolejki].nr_pietra_d = 4;
-			dl_kolejki++;
 			break;
 
 		case ID_BUTTON9:
 			pietra_tab[2].ludzie.push_back({ 60, 0 });
 			InvalidateRect(hWnd, &drawArea2, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 2;
-			dane[dl_kolejki].nr_pietra_d = 0;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON10:
 			pietra_tab[2].ludzie.push_back({ 60, 1 });
 			InvalidateRect(hWnd, &drawArea2, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 2;
-			dane[dl_kolejki].nr_pietra_d = 1;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON11:
 			pietra_tab[2].ludzie.push_back({ 60, 3 });
 			InvalidateRect(hWnd, &drawArea2, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 2;
-			dane[dl_kolejki].nr_pietra_d = 3;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON12:
 			pietra_tab[2].ludzie.push_back({ 60, 4 });
 			InvalidateRect(hWnd, &drawArea2, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 2;
-			dane[dl_kolejki].nr_pietra_d = 4;
-			dl_kolejki++;
 			break;
 
 		case ID_BUTTON13:
 			pietra_tab[1].ludzie.push_back({ 60, 0 });
 			InvalidateRect(hWnd, &drawArea1, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 1;
-			dane[dl_kolejki].nr_pietra_d = 0;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON14:
 			pietra_tab[1].ludzie.push_back({ 60, 2 });
 			InvalidateRect(hWnd, &drawArea1, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 1;
-			dane[dl_kolejki].nr_pietra_d == 2;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON15:
 			pietra_tab[1].ludzie.push_back({ 60, 3 });
 			InvalidateRect(hWnd, &drawArea1, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 1;
-			dane[dl_kolejki].nr_pietra_d = 3;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON16:
 			pietra_tab[1].ludzie.push_back({ 60, 4 });
 			InvalidateRect(hWnd, &drawArea1, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 1;
-			dane[dl_kolejki].nr_pietra_d = 4;
-			dl_kolejki++;
 			break;
 
 		case ID_BUTTON17:
 			pietra_tab[0].ludzie.push_back({ 60, 1 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 0;
-			dane[dl_kolejki].nr_pietra_d = 1;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON18:
 			pietra_tab[0].ludzie.push_back({ 60, 2 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 0;
-			dane[dl_kolejki].nr_pietra_d = 2;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON19:
 			pietra_tab[0].ludzie.push_back({ 60, 3 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 0;
-			dane[dl_kolejki].nr_pietra_d = 3;
-			dl_kolejki++;
 			break;
 		case ID_BUTTON20:
 			pietra_tab[0].ludzie.push_back({ 60, 4 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
-			dane[dl_kolejki].nr_pietra_p == 0;
-			dane[dl_kolejki].nr_pietra_d = 4;
-			dl_kolejki++;
 			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
