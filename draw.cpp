@@ -76,7 +76,7 @@ INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 void MyOnPaint(HDC hdc)
 {
 	
-
+	
 	Graphics graphics(hdc);
 	Pen pen(Color(255,0,0,255));
 	SolidBrush Brush(Color(255, 0, 0, 0));
