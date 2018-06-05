@@ -12,7 +12,7 @@ struct czlowiek
 {
 	int waga = 60;
 	int cel;
-	//int pozycja;//0-4 - pietra -1 lub cos innego - winda
+	//int pozycja;//0-4 - pietra;   -1 lub cos innego - winda
 	//alternatywnie utworzenie struktury pietro
 };
 
@@ -57,7 +57,7 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
  
 INT value;
 
-uklad winda = {500, 400, 100, 200, /*cel*/4, 0, 8, false, 4};
+uklad winda = {500, 400, 100, 200, /*cel*/0, 0, 8, false, /*cel_1*/0};
 
 RECT drawArea = { 500, 0, 701, 500 };
 RECT drawArea0 = { 101, 401, 500, 499 };
@@ -116,15 +116,16 @@ void MyOnPaint(HDC hdc)
 
 
 	//winda
+	int lb_wsiadajacych = 0;
+
 	if (value < winda.cel_1*h_pietra)
 		value++;
 	else if (value > winda.cel_1*h_pietra)
 		value--;
 	else //value == winda.cel_1*h_pietra
 	{
-
 		int rozmiar = winda.ludzie.size();
-		for (int i = 0; i < rozmiar; )
+		for (int i = 0; i < rozmiar; )//usuwanie ludzi z windy
 		{
 			i++;
 			//rozmiar = winda.ludzie.size();
@@ -139,28 +140,50 @@ void MyOnPaint(HDC hdc)
 
 		int rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
 		bool czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;//czy osiagnieto max liczbe osob w windzie
-		////-----------------------------------------------------------------------------------------------------------------------------TUTAJ
-		if (value < winda.cel_1*h_pietra)
+		
+		for (int i = 0; i < rozmiar_1 && !czy_max; i++)//dodawanie ludzi do windy i usuwanie z pieter i kolejki
 		{
-			for(int i=0;i<dane.size();i++)
-			{ }
-		}
-		/////----------------------------------------------------
-		for (int i = 0; i < rozmiar_1 && !czy_max; i++)
-		{
-			if (!czy_max)
+			if (!czy_max && value == winda.cel*h_pietra && dane.size()!=0)
 			{
-				winda.ludzie.push_back(pietra_tab[winda.cel_1].ludzie[0]);
-				pietra_tab[winda.cel_1].ludzie.erase(pietra_tab[winda.cel_1].ludzie.begin());
+				winda.cel = dane[0].nr_pietra_p;
 			}
+			else if (!czy_max && value == winda.cel*h_pietra)
+			{
+				winda.cel = pietra_tab[winda.cel_1].ludzie[0].cel;
+			}
+
+			if (!czy_max && pietra_tab[winda.cel_1].ludzie[i].cel <= winda.cel)
+			{
+				winda.ludzie.push_back(pietra_tab[winda.cel_1].ludzie[i]);
+				pietra_tab[winda.cel_1].ludzie.erase(pietra_tab[winda.cel_1].ludzie.begin() + i);
+				lb_wsiadajacych++;
+			}
+			
 			czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;
 		}
+
+		if (value == winda.cel_1*h_pietra && winda.ludzie.size() == 0 && dane.size() != 0) // winda.cel_1*h_pietra - aktualne polozenie windy
+		{
+			winda.cel = dane[0].nr_pietra_p;
+		}
+
+
 
 		if (rozmiar != 0)
 			winda.cel = winda.ludzie.front().cel;//odwolanie do celu pierwszego elementu// nie obsluguje przypadku, gdy najpierw ktos(czl_1) wezwie
 												 // winde, a po drodze ktos(czl_2) wsiadzie i bedzie chcial jechac w innym kierunku
 												 //zrobic najlepiej tak, ze jesli chce jechac w dol to winda sie nie zatrzyma
 												 // co jesli czl_2 bedzie chcial jechac wyzej niz czl_1??
+		////-----------------------------------------------------------------------------------------------------------------------------TUTAJ
+		if (value < winda.cel_1*h_pietra)
+		{
+			for(int i=0; i < dane.size(); i++)
+			{ 
+
+			}
+		}
+		/////----------------------------------------------------
+
 
 		winda.cel_1 = winda.cel;
 
