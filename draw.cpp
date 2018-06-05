@@ -37,9 +37,14 @@ struct pietro
 {
 	std::vector <czlowiek> ludzie;
 };
-
+struct kolejnosc{
+	int nr_pietra_p;
+	int nr_pietra_d;
+};
+const int waga_os = 60;
 const int lb_pieter = 5;
 int h_pietra = 100;
+std::vector<kolejnosc> dane;
 int color;
 
 pietro pietra_tab[lb_pieter];//tab pieter
@@ -134,6 +139,13 @@ void MyOnPaint(HDC hdc)
 
 		int rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
 		bool czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;//czy osiagnieto max liczbe osob w windzie
+		////-----------------------------------------------------------------------------------------------------------------------------TUTAJ
+		if (value < winda.cel_1*h_pietra)
+		{
+			for(int i=0;i<dane.size();i++)
+			{ }
+		}
+		/////----------------------------------------------------
 		for (int i = 0; i < rozmiar_1 && !czy_max; i++)
 		{
 			if (!czy_max)
@@ -499,88 +511,112 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			break;
 		//pietro 4
 		case ID_BUTTON1:
-			pietra_tab[4].ludzie.push_back({ 60, 0 });
+			pietra_tab[4].ludzie.push_back({ waga_os, 0 });
 			InvalidateRect(hWnd, &drawArea4, TRUE);
+			dane.push_back({ 4,0 });
 			break;
 		case ID_BUTTON2:
-			pietra_tab[4].ludzie.push_back({ 60, 1 });
+			pietra_tab[4].ludzie.push_back({ waga_os, 1 });
 			InvalidateRect(hWnd, &drawArea4, TRUE);
+			dane.push_back({ 4,1 });
 			break;
 		case ID_BUTTON3:
-			pietra_tab[4].ludzie.push_back({ 60, 2 });
+			pietra_tab[4].ludzie.push_back({ waga_os, 2 });
 			InvalidateRect(hWnd, &drawArea4, TRUE);
+			dane.push_back({ 4,2 });
 			break;
 		case ID_BUTTON4:
-			pietra_tab[4].ludzie.push_back({ 60, 3 });
+			pietra_tab[4].ludzie.push_back({ waga_os, 3 });
 			InvalidateRect(hWnd, &drawArea4, TRUE);
+			dane.push_back({ 4,3 });
 			break;
 
 		case ID_BUTTON5:
-			pietra_tab[3].ludzie.push_back({ 60, 0 });
+			pietra_tab[3].ludzie.push_back({ waga_os, 0 });
 			InvalidateRect(hWnd, &drawArea3, TRUE);
+			dane.push_back({ 3,0 });
 			break;
 		case ID_BUTTON6:
-			pietra_tab[3].ludzie.push_back({ 60, 1 });
+			pietra_tab[3].ludzie.push_back({ waga_os, 1 });
 			InvalidateRect(hWnd, &drawArea3, TRUE);
+			dane.push_back({ 3,1 });
 			break;
 		case ID_BUTTON7:
-			pietra_tab[3].ludzie.push_back({ 60, 2 });
+			pietra_tab[3].ludzie.push_back({ waga_os, 2 });
 			InvalidateRect(hWnd, &drawArea3, TRUE);
+			dane.push_back({ 3,2 });
 			break;
 		case ID_BUTTON8:
-			pietra_tab[3].ludzie.push_back({ 60, 4 });
+			pietra_tab[3].ludzie.push_back({ waga_os, 4 });
 			InvalidateRect(hWnd, &drawArea3, TRUE);
+			dane.push_back({ 3,4 });
 			break;
 
 		case ID_BUTTON9:
-			pietra_tab[2].ludzie.push_back({ 60, 0 });
+			pietra_tab[2].ludzie.push_back({ waga_os, 0 });
 			InvalidateRect(hWnd, &drawArea2, TRUE);
+			dane.push_back({ 2,0 });
 			break;
 		case ID_BUTTON10:
-			pietra_tab[2].ludzie.push_back({ 60, 1 });
+			pietra_tab[2].ludzie.push_back({ waga_os, 1 });
 			InvalidateRect(hWnd, &drawArea2, TRUE);
+			dane.push_back({ 2,1 });
 			break;
 		case ID_BUTTON11:
-			pietra_tab[2].ludzie.push_back({ 60, 3 });
+			pietra_tab[2].ludzie.push_back({ waga_os, 3 });
 			InvalidateRect(hWnd, &drawArea2, TRUE);
+			dane.push_back({ 2,3 });
 			break;
 		case ID_BUTTON12:
-			pietra_tab[2].ludzie.push_back({ 60, 4 });
+			pietra_tab[2].ludzie.push_back({ waga_os, 4 });
 			InvalidateRect(hWnd, &drawArea2, TRUE);
+			dane.push_back({ 2,4 });
 			break;
 
 		case ID_BUTTON13:
-			pietra_tab[1].ludzie.push_back({ 60, 0 });
+			pietra_tab[1].ludzie.push_back({ waga_os, 0 });
 			InvalidateRect(hWnd, &drawArea1, TRUE);
+			dane.push_back({ 1,0 });
 			break;
 		case ID_BUTTON14:
-			pietra_tab[1].ludzie.push_back({ 60, 2 });
+			pietra_tab[1].ludzie.push_back({ waga_os, 2 });
 			InvalidateRect(hWnd, &drawArea1, TRUE);
+			dane.push_back({ 1,2 });
 			break;
 		case ID_BUTTON15:
-			pietra_tab[1].ludzie.push_back({ 60, 3 });
+			pietra_tab[1].ludzie.push_back({ waga_os, 3 });
 			InvalidateRect(hWnd, &drawArea1, TRUE);
+			dane.push_back({ 1,3 });
 			break;
 		case ID_BUTTON16:
-			pietra_tab[1].ludzie.push_back({ 60, 4 });
+			pietra_tab[1].ludzie.push_back({ waga_os, 4 });
 			InvalidateRect(hWnd, &drawArea1, TRUE);
+			dane.push_back({ 1,4 });
 			break;
 
 		case ID_BUTTON17:
-			pietra_tab[0].ludzie.push_back({ 60, 1 });
+			pietra_tab[0].ludzie.push_back({ waga_os, 1 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
+			dane.push_back({ 0,1 });
 			break;
 		case ID_BUTTON18:
-			pietra_tab[0].ludzie.push_back({ 60, 2 });
+			pietra_tab[0].ludzie.push_back({ waga_os, 2 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
+			dane.push_back({ 0,2 });
 			break;
 		case ID_BUTTON19:
-			pietra_tab[0].ludzie.push_back({ 60, 3 });
+			pietra_tab[0].ludzie.push_back({ waga_os, 3 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
+			dane.push_back({ 0,3 });
 			break;
 		case ID_BUTTON20:
-			pietra_tab[0].ludzie.push_back({ 60, 4 });
+			pietra_tab[0].ludzie.push_back({ waga_os
+				
+				
+				
+				, 4 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
+			dane.push_back({ 0,4 });
 			break;
 		default:
 			return DefWindowProc(hWnd, message, wParam, lParam);
