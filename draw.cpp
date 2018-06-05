@@ -7,13 +7,11 @@
 
 #define MAX_LOADSTRING 100
 #define TMR_1 1
-//struktury
+//-------------------------------------------------------------struktury
 struct czlowiek
 {
 	int waga = 60;
 	int cel;
-	//int pozycja;//0-4 - pietra;   -1 lub cos innego - winda
-	//alternatywnie utworzenie struktury pietro
 };
 
 struct uklad
@@ -27,7 +25,6 @@ struct uklad
 	int lb_ludzi;
 	int max_lb;
 
-	//-------
 	bool open;//czy otwarta
 	int cel_1;//do ktorego winda aktualnnie jedzie, cel po drodze
 	std::vector <czlowiek> ludzie;
@@ -41,6 +38,7 @@ struct kolejnosc{
 	int nr_pietra_p;
 	int nr_pietra_d;
 };
+//----------------------------------------------------------zmienne
 const int waga_os = 60;
 const int lb_pieter = 5;
 int h_pietra = 100;
@@ -65,13 +63,16 @@ RECT drawArea1 = { 701, 301, 1100, 399 };
 RECT drawArea2 = { 101, 201, 500, 299 };
 RECT drawArea3 = { 701, 101, 1100, 199 };
 RECT drawArea4 = { 101, 1, 500, 99 };
-//RECT drawArea2 = { winda.l_d_corner_x,winda.l_d_corner_y, winda.l_d_corner_x + winda.width, winda.l_d_corner_y + winda.height, };
 // Forward declarations of functions included in this code module:
 ATOM				MyRegisterClass(HINSTANCE hInstance);
 BOOL				InitInstance(HINSTANCE, int);
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
 
+ //------------------------------------------------------------------------funkcje
+void postoj();
+void poruszanie_w_gore();
+void poruszanie_w_dol();
 
 void MyOnPaint(HDC hdc)
 {
@@ -81,7 +82,7 @@ void MyOnPaint(HDC hdc)
 	Pen pen(Color(255,0,0,255));
 	SolidBrush Brush(Color(255, 0, 0, 0));
 	
-	//pietra-----
+	//------------------------------------------------------------------rysowanie piêter
 	for (int i = 0; i <= lb_pieter; i++)
 	{
 		if (i == 0 || i == lb_pieter)
@@ -96,7 +97,7 @@ void MyOnPaint(HDC hdc)
 		else  if (i < lb_pieter)
 			graphics.DrawLine(&pen, winda.l_d_corner_x - 1, i * h_pietra, winda.l_d_corner_x - 1, (i + 1) * h_pietra);
 	}
-	//------
+	//------------------------------------------------------------------------------------rysowanie ludzi na piêtrach
 	for (int j = 0; j <lb_pieter; j++)
 	{
 		for (int i = 0; i < pietra_tab[j].ludzie.size(); i++)
@@ -108,6 +109,7 @@ void MyOnPaint(HDC hdc)
 				graphics.FillRectangle(&Brush, 750 + (i * 21), (5 - j)*h_pietra - 60, 20, 50);
 		}
 	}
+	//-------------------------------------------------------------------------------------rysowanie ludzi w windzie
 	for (int i = 0;i < winda.ludzie.size();i++)
 	{
 		SolidBrush Brush(Color((winda.ludzie[i].cel+1) * 50, 0, 0, winda.ludzie[i].cel*200));
@@ -115,183 +117,185 @@ void MyOnPaint(HDC hdc)
 	}
 
 
-	//winda
+	//-------------------------------------------------------------------------------------obs³uga windy 
 	int lb_wsiadajacych = 0;
 
-	
-	
-
-	if (winda.cel_1 == 2)//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	{
-		int a = 1;
-	}//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-
 	if (value < winda.cel_1*h_pietra)
-	{
+		poruszanie_w_gore();
 
-	if (winda.ludzie.size() != winda.max_lb)
-{
-
-		if (value / h_pietra + 1 < lb_pieter)//value/h_pietra+1
-		{
-			for (int i = 0; i < pietra_tab[value / h_pietra + 1].ludzie.size(); i++)
-			{
-				if (/*pietra_tab[value / h_pietra + 1].ludzie[i].cel <= winda.cel &&*/ pietra_tab[value / h_pietra+1].ludzie[i].cel > value / h_pietra)
-				{
-					winda.cel_1 = value / h_pietra + 1;
-				}
-			}
-		}
-}
-		for (int i = 0; i < winda.ludzie.size(); i++)
-		{
-			if (winda.ludzie[i].cel == value / h_pietra + 1)
-			{
-				winda.cel_1 = value / h_pietra + 1;
-			}
-		}	
-
-		value++;
-		
-	}
 	else if (value > winda.cel_1*h_pietra)
-	{
+		poruszanie_w_dol();
 
-	if (winda.ludzie.size() != winda.max_lb)
-{
-		if (value / h_pietra > 0)//value/h_pietra+1
-		{
-			for (int i = 0; i < pietra_tab[value / h_pietra].ludzie.size(); i++)
-			{
-				if (/*pietra_tab[value / h_pietra].ludzie[i].cel >= winda.cel &&*/ pietra_tab[value / h_pietra].ludzie[i].cel < value / h_pietra )
-				{
-					winda.cel_1 = value / h_pietra;
-				}
-			}
-		}
-}
-		for (int i = 0; i < winda.ludzie.size(); i++)
-		{
-			if (winda.ludzie[i].cel == value / h_pietra)
-			{
-				winda.cel_1 = value / h_pietra;
-			}
-		}
-
-		value--;
-	}
 	else //value == winda.cel_1*h_pietra
 	{
-		int rozmiar = winda.ludzie.size();
-		for (int i = 0; i < rozmiar; )//usuwanie ludzi z windy
-		{
-			i++;
-			//rozmiar = winda.ludzie.size();
-			if (winda.ludzie[i-1].cel == winda.cel_1)
-			{
-				winda.ludzie.erase(winda.ludzie.begin() + i-1);
-				i = 0;
-			}
-
-			rozmiar = winda.ludzie.size();
-		}
-
-		int rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
-		bool czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;//czy osiagnieto max liczbe osob w windzie
-
-		//-----------------------------
-		if (rozmiar_1 != 0)
-		{
-			if (dane.size() == 0)
-			{
-				winda.cel = pietra_tab[winda.cel_1].ludzie[0].cel;
-			}
-			else if ((value == winda.cel*h_pietra && value == dane[0].nr_pietra_p*h_pietra))
-			{
-				winda.cel = pietra_tab[winda.cel_1].ludzie[0].cel;
-				//winda.cel = dane[0].nr_pietra_p;
-			}
-			else if ( value == winda.cel*h_pietra && value != dane[0].nr_pietra_p*h_pietra/*chyba niepotrzebny "!= dane[0].nr_pietra_p*h_pietra" */)
-			{
-				winda.cel = dane[0].nr_pietra_p;
-			}
-			else if (value == winda.cel*h_pietra)
-			{
-				winda.cel = pietra_tab[winda.cel_1].ludzie[0].cel;
-			}
-
-		}
 		
-		//-----------------------------------------
-
-		if (rozmiar != 0)//-------------------------------------
-			winda.cel = winda.ludzie.front().cel;//odwolanie do celu pierwszego elementu// nie obsluguje przypadku, gdy najpierw ktos(czl_1) wezwie
-
-		for (int i = 0; i < rozmiar_1 && !czy_max; i++)//dodawanie ludzi do windy i usuwanie z pieter
-		{
-			if (!czy_max /*&& pietra_tab[winda.cel_1].ludzie[i].cel <= winda.cel */&& pietra_tab[winda.cel_1].ludzie[i].cel > winda.cel_1 && winda.cel >= winda.cel_1)
-			{
-				winda.ludzie.push_back(pietra_tab[winda.cel_1].ludzie[i]);
-				pietra_tab[winda.cel_1].ludzie.erase(pietra_tab[winda.cel_1].ludzie.begin() + i);
-				lb_wsiadajacych++;
-				i--;
-			}
-			else if (!czy_max /*&& pietra_tab[winda.cel_1].ludzie[i].cel >= winda.cel */ && pietra_tab[winda.cel_1].ludzie[i].cel < winda.cel_1 && winda.cel <= winda.cel_1)
-			{
-				winda.ludzie.push_back(pietra_tab[winda.cel_1].ludzie[i]);
-				pietra_tab[winda.cel_1].ludzie.erase(pietra_tab[winda.cel_1].ludzie.begin() + i);
-				lb_wsiadajacych++;
-				i--;
-			}
-			czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;
-			rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
-		}
-
-		
-		int rozmiar_dane = dane.size();
-
-		for (int i = 0; i < rozmiar_dane && lb_wsiadajacych > 0; i++)//usuwanie z kolejki
-		{
-			if (dane[i].nr_pietra_p == winda.cel_1 )//natrafilismy na podroznika, ktory jest na rozpatrywanym pietrze
-			{
-				if (/*dane[i].nr_pietra_d <= winda.cel  &&*/ winda.cel >= winda.cel_1)
-				{
-					dane.erase(dane.begin() + i);
-					lb_wsiadajacych--;
-					i--;
-				}
-				else if (/*dane[i].nr_pietra_d >= winda.cel  &&*/ winda.cel <= winda.cel_1)
-				{
-					dane.erase(dane.begin() + i);
-					lb_wsiadajacych--;
-					i--;
-				}
-			}
-			rozmiar_dane = dane.size();
-		}
-
-		if (value == winda.cel_1*h_pietra && winda.ludzie.size() == 0 && dane.size() != 0) //gdy jestesmy napietrze cel_1, w windzie nikogo nie ma, a w kolejce tak, to cel jest ustawiany na polozenie 1 w kolejce						
-		{																					// winda.cel_1*h_pietra - aktualne polozenie windy
-			winda.cel = dane[0].nr_pietra_p;
-		}
-
-
-		rozmiar = winda.ludzie.size();
-		if (rozmiar != 0)//-------------------------------------
-			winda.cel = winda.ludzie.front().cel;//odwolanie do celu pierwszego elementu// nie obsluguje przypadku, gdy najpierw ktos(czl_1) wezwie
-												 // winde, a po drodze ktos(czl_2) wsiadzie i bedzie chcial jechac w innym kierunku
-												 //zrobic najlepiej tak, ze jesli chce jechac w dol to winda sie nie zatrzyma
-												 // co jesli czl_2 bedzie chcial jechac wyzej niz czl_1??
-		
-		winda.cel_1 = winda.cel;
-
+		postoj();
 		graphics.DrawRectangle(&pen, winda.l_d_corner_x, winda.l_d_corner_y - value, winda.width, winda.height);
 		Sleep(500);//zatrzymanie windy na pietrze
 	}
 	graphics.DrawRectangle(&pen, winda.l_d_corner_x, winda.l_d_corner_y - value, winda.width, winda.height);
 }
 
+void poruszanie_w_gore()
+{
+	if (winda.ludzie.size() != winda.max_lb)
+	{
+
+		if (value / h_pietra + 1 < lb_pieter)//value/h_pietra+1
+		{
+			for (int i = 0; i < pietra_tab[value / h_pietra + 1].ludzie.size(); i++)
+			{
+				if (/*pietra_tab[value / h_pietra + 1].ludzie[i].cel <= winda.cel &&*/ pietra_tab[value / h_pietra + 1].ludzie[i].cel > value / h_pietra)
+				{
+					winda.cel_1 = value / h_pietra + 1;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < winda.ludzie.size(); i++)
+	{
+		if (winda.ludzie[i].cel == value / h_pietra + 1)
+		{
+			winda.cel_1 = value / h_pietra + 1;
+		}
+	}
+
+	value++;
+}
+
+void poruszanie_w_dol()
+{
+
+	if (winda.ludzie.size() != winda.max_lb)
+	{
+		if (value / h_pietra > 0)//value/h_pietra+1
+		{
+			for (int i = 0; i < pietra_tab[value / h_pietra].ludzie.size(); i++)
+			{
+				if (/*pietra_tab[value / h_pietra].ludzie[i].cel >= winda.cel &&*/ pietra_tab[value / h_pietra].ludzie[i].cel < value / h_pietra)
+				{
+					winda.cel_1 = value / h_pietra;
+				}
+			}
+		}
+	}
+	for (int i = 0; i < winda.ludzie.size(); i++)
+	{
+		if (winda.ludzie[i].cel == value / h_pietra)
+		{
+			winda.cel_1 = value / h_pietra;
+		}
+	}
+
+	value--;
+}
+
+void postoj()
+{
+
+	int rozmiar = winda.ludzie.size();
+	int lb_wsiadajacych = 0;
+	//--------------------------------------------------------------------------------usuwanie ludzi z windy
+	for (int i = 0; i < rozmiar; )
+	{
+		i++;
+		if (winda.ludzie[i - 1].cel == winda.cel_1)
+		{
+			winda.ludzie.erase(winda.ludzie.begin() + i - 1);
+			i = 0;
+		}
+
+		rozmiar = winda.ludzie.size();
+	}
+
+	int rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
+	bool czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;//czy osiagnieto max liczbe osob w windzie
+
+	//-----------------------------  ----------------------------------------------nadawanie celu windy              
+	if (rozmiar_1 != 0)
+	{
+		if (dane.size() == 0)
+		{
+			winda.cel = pietra_tab[winda.cel_1].ludzie[0].cel;
+		}
+		else if ((value == winda.cel*h_pietra && value == dane[0].nr_pietra_p*h_pietra))
+		{
+			winda.cel = pietra_tab[winda.cel_1].ludzie[0].cel;
+		}
+		else if (value == winda.cel*h_pietra && value != dane[0].nr_pietra_p*h_pietra/*chyba niepotrzebny "!= dane[0].nr_pietra_p*h_pietra" */)
+		{
+			winda.cel = dane[0].nr_pietra_p;
+		}
+		else if (value == winda.cel*h_pietra)
+		{
+			winda.cel = pietra_tab[winda.cel_1].ludzie[0].cel;
+		}
+
+	}
+
+	//-----------------------------------------
+
+	if (rozmiar != 0)//-------------------------------------
+		winda.cel = winda.ludzie.front().cel;//odwolanie do celu pierwszego elementu// nie obsluguje przypadku, gdy najpierw ktos(czl_1) wezwie
+											 //-------------------------------------------------------------------------------dodawanie ludzi do windy i usuwanie z piêter
+	for (int i = 0; i < rozmiar_1 && !czy_max; i++)
+	{
+		if (!czy_max /*&& pietra_tab[winda.cel_1].ludzie[i].cel <= winda.cel */&& pietra_tab[winda.cel_1].ludzie[i].cel > winda.cel_1 && winda.cel >= winda.cel_1)
+		{
+			winda.ludzie.push_back(pietra_tab[winda.cel_1].ludzie[i]);
+			pietra_tab[winda.cel_1].ludzie.erase(pietra_tab[winda.cel_1].ludzie.begin() + i);
+			lb_wsiadajacych++;
+			i--;
+		}
+		else if (!czy_max /*&& pietra_tab[winda.cel_1].ludzie[i].cel >= winda.cel */ && pietra_tab[winda.cel_1].ludzie[i].cel < winda.cel_1 && winda.cel <= winda.cel_1)
+		{
+			winda.ludzie.push_back(pietra_tab[winda.cel_1].ludzie[i]);
+			pietra_tab[winda.cel_1].ludzie.erase(pietra_tab[winda.cel_1].ludzie.begin() + i);
+			lb_wsiadajacych++;
+			i--;
+		}
+		czy_max = (winda.max_lb == winda.ludzie.size()) ? true : false;
+		rozmiar_1 = pietra_tab[winda.cel_1].ludzie.size();
+	}
+
+
+	int rozmiar_dane = dane.size();
+	//---------------------------------------------------------------------usuwanie z kolejki
+	for (int i = 0; i < rozmiar_dane && lb_wsiadajacych > 0; i++)
+	{
+		if (dane[i].nr_pietra_p == winda.cel_1)//natrafilismy na podroznika, ktory jest na rozpatrywanym pietrze
+		{
+			if (/*dane[i].nr_pietra_d <= winda.cel  &&*/ winda.cel >= winda.cel_1)
+			{
+				dane.erase(dane.begin() + i);
+				lb_wsiadajacych--;
+				i--;
+			}
+			else if (/*dane[i].nr_pietra_d >= winda.cel  &&*/ winda.cel <= winda.cel_1)
+			{
+				dane.erase(dane.begin() + i);
+				lb_wsiadajacych--;
+				i--;
+			}
+		}
+		rozmiar_dane = dane.size();
+	}
+
+	if (value == winda.cel_1*h_pietra && winda.ludzie.size() == 0 && dane.size() != 0) //gdy jestesmy napietrze cel_1, w windzie nikogo nie ma, a w kolejce tak, to cel jest ustawiany na polozenie 1 w kolejce						
+	{																					// winda.cel_1*h_pietra - aktualne polozenie windy
+		winda.cel = dane[0].nr_pietra_p;
+	}
+
+
+	rozmiar = winda.ludzie.size();
+	if (rozmiar != 0)//-------------------------------------
+		winda.cel = winda.ludzie.front().cel;//odwolanie do celu pierwszego elementu// nie obsluguje przypadku, gdy najpierw ktos(czl_1) wezwie
+											 // winde, a po drodze ktos(czl_2) wsiadzie i bedzie chcial jechac w innym kierunku
+											 //zrobic najlepiej tak, ze jesli chce jechac w dol to winda sie nie zatrzyma
+											 // co jesli czl_2 bedzie chcial jechac wyzej niz czl_1??
+
+	winda.cel_1 = winda.cel;
+}
 
 int OnCreate(HWND window)
 {
@@ -402,7 +406,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW, 
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
        
-   HWND hwndButton = CreateWindow(TEXT("button"),//pietro 4;  0
+   HWND hwndButton = CreateWindow(TEXT("button"),//pietro 4
 	   TEXT("0"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   20, 20,
@@ -411,7 +415,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   (HMENU)ID_BUTTON1,
 	   hInstance,
 	   NULL);
-    hwndButton = CreateWindow(TEXT("button"),//pietro 4;  1
+    hwndButton = CreateWindow(TEXT("button"),//pietro 4
 	   TEXT("1"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   40, 20,
@@ -420,7 +424,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   (HMENU)ID_BUTTON2,
 	   hInstance,
 	   NULL);
-    hwndButton = CreateWindow(TEXT("button"),//pietro 4;  2
+    hwndButton = CreateWindow(TEXT("button"),//pietro 4
 	   TEXT("2"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   60, 20,
@@ -429,7 +433,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	   (HMENU)ID_BUTTON3,
 	   hInstance,
 	   NULL);
-    hwndButton = CreateWindow(TEXT("button"),//pietro 4;  3
+    hwndButton = CreateWindow(TEXT("button"),//pietro 4
 	   TEXT("3"),
 	   WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON,
 	   80, 20,
@@ -652,7 +656,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InvalidateRect(hWnd, &drawArea4, TRUE);
 			dane.push_back({ 4,3 });
 			break;
-
+		//pietro 3
 		case ID_BUTTON5:
 			pietra_tab[3].ludzie.push_back({ waga_os, 0 });
 			InvalidateRect(hWnd, &drawArea3, TRUE);
@@ -673,7 +677,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InvalidateRect(hWnd, &drawArea3, TRUE);
 			dane.push_back({ 3,4 });
 			break;
-
+		//pietro 2
 		case ID_BUTTON9:
 			pietra_tab[2].ludzie.push_back({ waga_os, 0 });
 			InvalidateRect(hWnd, &drawArea2, TRUE);
@@ -694,7 +698,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InvalidateRect(hWnd, &drawArea2, TRUE);
 			dane.push_back({ 2,4 });
 			break;
-
+		//pietro 1
 		case ID_BUTTON13:
 			pietra_tab[1].ludzie.push_back({ waga_os, 0 });
 			InvalidateRect(hWnd, &drawArea1, TRUE);
@@ -715,7 +719,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			InvalidateRect(hWnd, &drawArea1, TRUE);
 			dane.push_back({ 1,4 });
 			break;
-
+		//parter
 		case ID_BUTTON17:
 			pietra_tab[0].ludzie.push_back({ waga_os, 1 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
@@ -732,11 +736,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			dane.push_back({ 0,3 });
 			break;
 		case ID_BUTTON20:
-			pietra_tab[0].ludzie.push_back({ waga_os
-				
-				
-				
-				, 4 });
+			pietra_tab[0].ludzie.push_back({ waga_os, 4 });
 			InvalidateRect(hWnd, &drawArea0, TRUE);
 			dane.push_back({ 0,4 });
 			break;
@@ -762,18 +762,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				InvalidateRect(hWnd, &drawArea, TRUE);
 					switch (value)
 					{
-					case 0: InvalidateRect(hWnd, &drawArea0, TRUE);break;
+					case 0: 
 					case 1: InvalidateRect(hWnd, &drawArea0, TRUE); break;
-					case 99:InvalidateRect(hWnd, &drawArea1, TRUE); break;
-					case 100:InvalidateRect(hWnd, &drawArea1, TRUE);break;
+					case 99:
+					case 100:
 					case 101:InvalidateRect(hWnd, &drawArea1, TRUE); break;
-					case 199:InvalidateRect(hWnd, &drawArea2, TRUE);break;
-					case 200:InvalidateRect(hWnd, &drawArea2, TRUE); break;
+					case 199:
+					case 200:
 					case 201:InvalidateRect(hWnd, &drawArea2, TRUE); break;
-					case 299:InvalidateRect(hWnd, &drawArea3, TRUE);break;
-					case 300:InvalidateRect(hWnd, &drawArea3, TRUE); break;
+					case 299:
+					case 300:
 					case 301:InvalidateRect(hWnd, &drawArea3, TRUE); break;
-					case 399:InvalidateRect(hWnd, &drawArea4, TRUE);break;
+					case 399:
 					case 400:InvalidateRect(hWnd, &drawArea4, TRUE); break;
 					default: break;
 					}
