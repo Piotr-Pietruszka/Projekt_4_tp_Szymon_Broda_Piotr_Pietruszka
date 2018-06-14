@@ -10,7 +10,7 @@
 //-------------------------------------------------------------struktury
 struct czlowiek
 {
-	int waga = 60;
+	int waga ;
 	int cel;
 };
 
@@ -39,7 +39,8 @@ struct kolejnosc{
 	int nr_pietra_d;
 };
 //----------------------------------------------------------zmienne
-const int waga_os = 60;
+const int udzwig_windy = 600;
+const int waga_os = 70;
 const int lb_pieter = 5;
 int h_pietra = 100;
 std::vector<kolejnosc> dane;
@@ -55,7 +56,7 @@ TCHAR szWindowClass[MAX_LOADSTRING];			// the main window class name
  
 INT value;
 
-uklad winda = {500, 400, 100, 200, /*cel*/0, 0, 8, false, /*cel_1*/0};
+uklad winda = {500, 400, 100, 200, /*cel*/0, 0, udzwig_windy/ waga_os, false, /*cel_1*/0};
 
 RECT drawArea = { 500, 0, 701, 500 };
 RECT drawArea0 = { 101, 401, 500, 499 };
